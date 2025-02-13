@@ -20,18 +20,32 @@
 
         {% if domain %}
             <h2>Results for {{ domain }}</h2>
+
             <h3>DNS Records:</h3>
             <ul>
                 <li><strong>SPF:</strong> {{ dns_results.SPF }}</li>
                 <li><strong>DKIM:</strong> {{ dns_results.DKIM }}</li>
                 <li><strong>DMARC:</strong> {{ dns_results.DMARC }}</li>
             </ul>
-            
+
             <h3>Blacklist Status:</h3>
             <ul>
                 {% for service, status in blacklist_results.items() %}
                     <li><strong>{{ service }}:</strong> {{ status }}</li>
                 {% endfor %}
+            </ul>
+
+            <h3>WHOIS Information:</h3>
+            <ul>
+                <li><strong>Registrar:</strong> {{ whois_info.registrar }} ({{ get_registrar_info(whois_info.registrar) }})</li>
+                <li><strong>Creation Date:</strong> {{ whois_info.creation_date }}</li>
+                <li><strong>Expiration Date:</strong> {{ whois_info.expiration_date }}</li>
+                <li><strong>Nameservers:</strong></li>
+                <ul>
+                    {% for ns in whois_info.nameservers %}
+                        <li>{{ ns }} ({{ get_nameserver_info(ns) }})</li>
+                    {% endfor %}
+                </ul>
             </ul>
         {% endif %}
     </div>
