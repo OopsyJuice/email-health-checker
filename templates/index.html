@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Health Checker</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Email Health Checker</h1>
+        <form method="POST" action="/check-email-health">
+            <input type="text" name="domain" placeholder="Enter domain (example.com)" required>
+            <button type="submit">Check</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if domain %}
+            <h2>Results for {{ domain }}</h2>
+            <h3>DNS Records:</h3>
+            <ul>
+                <li><strong>SPF:</strong> {{ dns_results.SPF }}</li>
+                <li><strong>DKIM:</strong> {{ dns_results.DKIM }}</li>
+                <li><strong>DMARC:</strong> {{ dns_results.DMARC }}</li>
+            </ul>
+            
+            <h3>Blacklist Status:</h3>
+            <ul>
+                {% for service, status in blacklist_results.items() %}
+                    <li><strong>{{ service }}:</strong> {{ status }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+/* Dark mode professional theme */
+body {
+    background-color: #1e1e1e;
+    color: #eeeeee;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 40px;
+}
+
+/* Centered container with soft shadow */
+.container {
+    max-width: 500px;
+    margin: auto;
+    background-color: #2a2d35;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Input field design */
+input {
+    width: 90%;
+    padding: 12px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #393e46;
+    color: #eeeeee;
+    text-align: center;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s;
+}
+
+input:focus {
+    background-color: #494f58;
+}
+
+/* Submit button */
+button {
+    background-color: #00adb5;
+    color: #1e1e1e;
+    border: none;
+    padding: 12px 18px;
+    margin-top: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #008a92;
+    transform: scale(1.05);
+}
+
+/* Error messages */
+.error {
+    color: #ff4b5c;
+    font-weight: bold;
+}
+
+/* Result sections */
+h2, h3 {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: #222831;
+    padding: 12px;
+    margin: 6px 0;
+    border-radius: 6px;
+    font-size: 16px;
+}
