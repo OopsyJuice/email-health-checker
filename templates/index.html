@@ -9,45 +9,139 @@
 <body>
     <div class="container">
         <h1>Email Health Checker</h1>
-        <form method="POST" action="/check-email-health">
-            <input type="text" name="domain" placeholder="Enter domain (example.com)" required>
-            <button type="submit">Check</button>
+        <form id="domain-form" method="POST" action="/check-email-health">
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="domain-input" 
+                    name="domain" 
+                    placeholder="Enter domain (example.com)" 
+                    required 
+                    pattern="^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](\.[a-zA-Z]{2,})+$"
+                >
+                <span class="input-error" id="domain-error"></span>
+            </div>
+            <button type="submit" id="submit-btn">Check Domain</button>
         </form>
+
+        <div id="loading-spinner" class="hidden">
+            <div class="spinner"></div>
+            <p>Analyzing domain health...</p>
+        </div>
 
         {% if error %}
             <p class="error">{{ error }}</p>
         {% endif %}
 
         {% if domain %}
-            <h2>Results for {{ domain }}</h2>
+            <div class="results-container">
+                <h2>Results for {{ domain }}</h2>
 
-            <h3>DNS Records:</h3>
-            <ul>
-                <li><strong>SPF:</strong> {{ dns_results.SPF }}</li>
-                <li><strong>DKIM:</strong> {{ dns_results.DKIM }}</li>
-                <li><strong>DMARC:</strong> {{ dns_results.DMARC }}</li>
-            </ul>
+                <div class="result-section">
+                    <h3>DNS Records <span class="tooltip" title="DNS records verify domain ownership and prevent email spoofing">ℹ️</span></h3>
+                    <ul>
+                        <li class="{% if dns_results.SPF == True %}good{% elif dns_results.SPF == 'Record Not Found' %}warning{% else %}bad{% endif %}">
+                            <strong>SPF:</strong> 
+                            {% if dns_results.SPF == True %}
+                                Configured Correctly
+                            {% elif dns_results.SPF == 'Record Not Found' %}
+                                No SPF Record Found
+                            {% else %}
+                                SPF Configuration Issue
+                            {% endif %}
+                        </li>
+                        <li class="{% if dns_results.DKIM == True %}good{% elif dns_results.DKIM == 'Record Not Found' %}warning{% else %}bad{% endif %}">
+                            <strong>DKIM:</strong> 
+                            {% if dns_results.DKIM == True %}
+                                Configured Correctly
+                            {% elif dns_results.DKIM == 'Record Not Found' %}
+                                No DKIM Record Found
+                            {% else %}
+                                DKIM Configuration Issue
+                            {% endif %}
+                        </li>
+                        <li class="{% if dns_results.DMARC == True %}good{% elif dns_results.DMARC == 'Record Not Found' %}warning{% else %}bad{% endif %}">
+                            <strong>DMARC:</strong> 
+                            {% if dns_results.DMARC == True %}
+                                Configured Correctly
+                            {% elif dns_results.DMARC == 'Record Not Found' %}
+                                No DMARC Record Found
+                            {% else %}
+                                DMARC Configuration Issue
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
 
-            <h3>Blacklist Status:</h3>
-            <ul>
-                {% for service, status in blacklist_results.items() %}
-                    <li><strong>{{ service }}:</strong> {{ status }}</li>
-                {% endfor %}
-            </ul>
+                <div class="result-section">
+                    <h3>Blacklist Status <span class="tooltip" title="Checks if domain is listed on spam blacklists">ℹ️</span></h3>
+                    <ul>
+                        {% for service, status in blacklist_results.items() %}
+                            <li class="{% if status == 'Not Listed' %}good{% else %}bad{% endif %}">
+                                <strong>{{ service }}:</strong> {{ status }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
 
-            <h3>WHOIS Information:</h3>
-            <ul>
-                <li><strong>Registrar:</strong> {{ whois_info.registrar }} ({{ get_registrar_info(whois_info.registrar) }})</li>
-                <li><strong>Creation Date:</strong> {{ whois_info.creation_date }}</li>
-                <li><strong>Expiration Date:</strong> {{ whois_info.expiration_date }}</li>
-                <li><strong>Nameservers:</strong></li>
-                <ul>
-                    {% for ns in whois_info.nameservers %}
-                        <li>{{ ns }} ({{ get_nameserver_info(ns) }})</li>
-                    {% endfor %}
-                </ul>
-            </ul>
+                <div class="result-section">
+                    <h3>WHOIS Information <span class="tooltip" title="Domain registration and ownership details">ℹ️</span></h3>
+                    <ul>
+                        <li>
+                            <strong>Registrar:</strong> 
+                            {{ whois_info.registrar }} 
+                            <span class="tooltip" title="{{ get_registrar_info(whois_info.registrar) }}">ℹ️</span>
+                        </li>
+                        <li><strong>Creation Date:</strong> {{ whois_info.creation_date }}</li>
+                        <li><strong>Expiration Date:</strong> {{ whois_info.expiration_date }}</li>
+                        <li>
+                            <strong>Nameservers:</strong>
+                            <ul>
+                                {% for ns in whois_info.nameservers %}
+                                    <li>
+                                        {{ ns }} 
+                                        <span class="tooltip" title="{{ get_nameserver_info(ns) }}">ℹ️</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         {% endif %}
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('domain-form');
+            const input = document.getElementById('domain-input');
+            const submitBtn = document.getElementById('submit-btn');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const domainError = document.getElementById('domain-error');
+
+            // Domain validation regex
+            const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](\.[a-zA-Z]{2,})+$/;
+
+            input.addEventListener('input', function() {
+                // Real-time validation
+                if (input.value === '') {
+                    domainError.textContent = 'Domain cannot be empty';
+                    submitBtn.disabled = true;
+                } else if (!domainRegex.test(input.value)) {
+                    domainError.textContent = 'Please enter a valid domain (e.g., example.com)';
+                    submitBtn.disabled = true;
+                } else {
+                    domainError.textContent = '';
+                    submitBtn.disabled = false;
+                }
+            });
+
+            form.addEventListener('submit', function(e) {
+                // Show loading spinner
+                loadingSpinner.classList.remove('hidden');
+                submitBtn.disabled = true;
+            });
+        });
+    </script>
 </body>
 </html>
