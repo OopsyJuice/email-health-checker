@@ -1,0 +1,51 @@
+{% if results %}
+<div class="results-container">
+    <!-- Server Connectivity -->
+    <div class="test-group">
+        <h3>Server Connectivity</h3>
+        <div class="test-results">
+            <div class="test-item {% if results.port_25.open %}good{% else %}bad{% endif %}">
+                <span class="test-name">SMTP (Port 25)</span>
+                <span class="test-status">{{ "Open" if results.port_25.open else "Closed" }}</span>
+            </div>
+            <div class="test-item {% if results.port_465.open %}good{% else %}bad{% endif %}">
+                <span class="test-name">SMTP SSL (Port 465)</span>
+                <span class="test-status">{{ "Open" if results.port_465.open else "Closed" }}</span>
+            </div>
+            <div class="test-item {% if results.port_587.open %}good{% else %}bad{% endif %}">
+                <span class="test-name">SMTP TLS (Port 587)</span>
+                <span class="test-status">{{ "Open" if results.port_587.open else "Closed" }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mail Server Records -->
+    <div class="test-group">
+        <h3>Mail Server Records</h3>
+        <div class="test-results">
+            <div class="test-item {% if results.mx_records %}good{% else %}bad{% endif %}">
+                <span class="test-name">MX Records</span>
+                <span class="test-status">{{ "Configured" if results.mx_records else "Not Found" }}</span>
+            </div>
+            <div class="test-item {% if results.ptr_record %}good{% else %}bad{% endif %}">
+                <span class="test-name">Reverse DNS (PTR)</span>
+                <span class="test-status">{{ "Valid" if results.ptr_record else "Not Found" }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Server Details -->
+    <div class="test-group">
+        <h3>Server Details</h3>
+        <div class="server-info">
+            {% if results.server_details %}
+                {% for detail in results.server_details %}
+                    <div class="detail-line">{{ detail }}</div>
+                {% endfor %}
+            {% else %}
+                <div class="detail-line empty">No SMTP server details available</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %} 

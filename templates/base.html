@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Nixie{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="nav-brand">
+            <a href="{{ url_for('api.home') }}" class="brand-link">
+                <div class="logo-placeholder">N</div>
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('api.home') }}" class="nav-link {% if request.endpoint == 'api.home' %}active{% endif %}">
+                DNS Tests
+            </a>
+            <a href="{{ url_for('api.email_config') }}" class="nav-link {% if request.endpoint == 'api.email_config' %}active{% endif %}">
+                Mail Server Tests
+            </a>
+            <a href="{{ url_for('api.headers') }}" class="nav-link {% if request.endpoint == 'api.headers' %}active{% endif %}">
+                Header Tests
+            </a>
+            <a href="{{ url_for('api.security') }}" class="nav-link {% if request.endpoint == 'api.security' %}active{% endif %}">
+                Security Tests
+            </a>
+        </div>
+    </nav>
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

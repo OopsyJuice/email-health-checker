@@ -528,3 +528,290 @@ li {
     font-family: monospace;
     opacity: 0.8;
 }
+
+/* Add to your existing CSS */
+.main-nav {
+    background: #1e2124;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+}
+
+.brand-link {
+    text-decoration: none;
+}
+
+.logo-placeholder {
+    width: 40px;
+    height: 40px;
+    background: #00adb5;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1e2124;
+    font-weight: 700;
+    font-size: 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.brand-link:hover .logo-placeholder {
+    background: #00c2cc;
+}
+
+.beta-badge {
+    background: rgba(0, 173, 181, 0.2);
+    color: #00adb5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #ffffff;
+}
+
+.nav-link.active {
+    color: #00adb5;
+    border-bottom-color: #00adb5;
+}
+
+.content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Mail Server Tests Styles */
+.test-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.section-description {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 20px;
+}
+
+.test-group {
+    background: rgba(30, 33, 36, 0.5);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.test-group h3 {
+    color: #00adb5;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+.test-results {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.test-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.test-name {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.test-status {
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.server-info {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    padding: 12px;
+}
+
+.info-block {
+    display: block;
+    font-family: monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.detail-line {
+    padding: 2px 0;
+}
+
+/* Loading Animation Styles */
+.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(30, 33, 36, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loading-content {
+    text-align: center;
+    padding: 2rem;
+    max-width: 400px;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(0, 173, 181, 0.3);
+    border-radius: 50%;
+    border-top-color: #00adb5;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+.loading-text {
+    color: #00adb5;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.progress-steps {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.step {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    padding-left: 24px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.step::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(0, 173, 181, 0.3);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.step.active {
+    color: #fff;
+}
+
+.step.active::before {
+    border-color: #00adb5;
+    background: #00adb5;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.hidden {
+    display: none;
+}
+
+/* Add to existing styles */
+.error-group, .recommendations-group {
+    background: rgba(30, 33, 36, 0.5);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.error-item {
+    color: #ff4b5c;
+    padding: 8px;
+    background: rgba(255, 75, 92, 0.1);
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.recommendation-item {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 8px;
+}
+
+.rec-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.severity-badge {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.recommendation-item.high .severity-badge {
+    background: rgba(255, 75, 92, 0.2);
+    color: #ff4b5c;
+}
+
+.recommendation-item.medium .severity-badge {
+    background: rgba(255, 187, 0, 0.2);
+    color: #ffbb00;
+}
+
+.recommendation-item.low .severity-badge {
+    background: rgba(0, 173, 181, 0.2);
+    color: #00adb5;
+}
+
+.rec-details {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+.detail-line.empty {
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}

@@ -293,7 +293,7 @@ def get_nameserver_info(nameserver):
     elif "squarespace" in lower_ns:
         return "Squarespace (Website Builder & DNS Provider)"
     else:
-        return "Unknown Provider"
+        return "Generic DNS Provider"
 
 def get_nameservers_direct(domain):
     """Get nameservers directly through DNS query."""

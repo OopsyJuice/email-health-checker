@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Mail Server Tests - Nixie{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="test-section">
+        <h1>Mail Server Tests</h1>
+        <p class="section-description">Test your mail server configuration, connectivity, and security settings.</p>
+
+        <form action="{{ url_for('api.run_mail_tests') }}" method="POST" class="test-form" id="testForm">
+            <div class="input-group">
+                <input type="text" 
+                       name="domain" 
+                       class="domain-input" 
+                       placeholder="Enter domain (e.g., example.com)"
+                       required>
+                <button type="submit" class="submit-button">Run Tests</button>
+            </div>
+        </form>
+
+        <!-- Loading Animation -->
+        <div class="loading-container hidden" id="loadingContainer">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Analyzing Mail Server Configuration</div>
+                <div class="progress-steps">
+                    <div class="step" id="step1">Checking MX Records...</div>
+                    <div class="step" id="step2">Testing SMTP Ports...</div>
+                    <div class="step" id="step3">Verifying PTR Records...</div>
+                    <div class="step" id="step4">Getting Server Details...</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="results-container">
+            {% if results %}
+                {% include 'email_config_results.html' %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('testForm');
+    const loadingContainer = document.getElementById('loadingContainer');
+    const resultsContainer = document.getElementById('results-container');
+
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (loadingContainer) {
+                loadingContainer.classList.remove('hidden');
+            }
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                if (resultsContainer) {
+                    resultsContainer.innerHTML = html;
+                }
+                if (loadingContainer) {
+                    loadingContainer.classList.add('hidden');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (loadingContainer) {
+                    loadingContainer.classList.add('hidden');
+                }
+                alert('An error occurred while testing the mail server.');
+            });
+        });
+    }
+});
+</script>
+{% endblock %} 
