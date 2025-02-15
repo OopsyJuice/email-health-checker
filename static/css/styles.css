@@ -305,3 +305,139 @@ li {
 .home-link:hover {
     opacity: 0.8;
 }
+
+.expand-toggle {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s;
+}
+
+.expand-toggle:hover {
+    opacity: 1;
+}
+
+.expand-icon {
+    fill: #00adb5;
+    transition: transform 0.2s;
+}
+
+.expand-toggle[aria-expanded="true"] .expand-icon {
+    transform: rotate(180deg);
+}
+
+.advanced-results {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+}
+
+.advanced-results.expanded {
+    max-height: 500px;
+    transition: max-height 0.5s ease-in;
+}
+
+.advanced-record {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(0, 173, 181, 0.1);
+    border-radius: 4px;
+}
+
+.advanced-record h4 {
+    color: #00adb5;
+    margin: 0 0 8px 0;
+    font-size: 0.9em;
+}
+
+.record-details {
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.2);
+    font-family: monospace;
+    font-size: 16px !important;
+    line-height: 1.4;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    white-space: pre-wrap;
+    word-break: break-word;
+    letter-spacing: 0.5px;
+}
+
+.dns-record {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.record-type {
+    color: #ff0000;
+    margin-right: 8px;
+}
+
+.status-text {
+    color: #ffffff;
+}
+
+.expand-toggle {
+    background: none;
+    border: none;
+    color: #00adb5;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    opacity: 0.7;
+    transition: transform 0.2s;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    margin-top: -2px; /* Adjust this value to fine-tune vertical alignment */
+}
+
+.record-details {
+    padding: 10px 15px;
+    background: rgba(0, 0, 0, 0.2);
+    font-family: monospace;
+    font-size: 0.85em;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hidden {
+    display: none;
+}
+
+.record-row {
+    background: rgba(40, 167, 69, 0.2);
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.record-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    min-height: 24px;
+}
+
+.record-type {
+    color: #ffffff;
+}
+
+.status-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.status {
+    color: #ffffff;
+}
+
+/* Additional specificity to ensure our styles take precedence */
+.result-subsection .record-row .record-details {
+    font-size: 16px !important;
+}

@@ -20,28 +20,37 @@ def check_dns_records(domain):
     # Check SPF
     try:
         spf_records = dns.resolver.resolve(domain, "TXT")
-        results["SPF"] = any("v=spf1" in record.to_text() for record in spf_records)
-    except:
-        results["SPF"] = "Record Not Found"
+        spf_record = next((record.to_text() for record in spf_records if "v=spf1" in record.to_text()), None)
+        results["SPF"] = bool(spf_record)
+        results["spf_details"] = spf_record.strip('"') if spf_record else "No SPF record found"
+    except Exception as e:
+        results["SPF"] = False
+        results["spf_details"] = f"Error retrieving SPF record: {str(e)}"
 
     # Check DKIM
     dkim_found = False
+    dkim_details = []
     for selector in DKIM_SELECTORS:
         try:
             dkim_records = dns.resolver.resolve(f"{selector}._domainkey.{domain}", "TXT")
+            dkim_record = dkim_records[0].to_text()
             dkim_found = True
-            break  # Stop checking if we find a DKIM record
+            dkim_details.append(f"Selector '{selector}': {dkim_record.strip('\"')}")
         except:
             continue
 
-    results["DKIM"] = dkim_found if dkim_found else "Record Not Found"
+    results["DKIM"] = dkim_found
+    results["dkim_details"] = "\n".join(dkim_details) if dkim_details else "No DKIM records found"
 
     # Check DMARC
     try:
         dmarc_records = dns.resolver.resolve(f"_dmarc.{domain}", "TXT")
-        results["DMARC"] = any("v=DMARC1" in record.to_text() for record in dmarc_records)
-    except:
-        results["DMARC"] = "Record Not Found"
+        dmarc_record = next((record.to_text() for record in dmarc_records if "v=DMARC1" in record.to_text()), None)
+        results["DMARC"] = bool(dmarc_record)
+        results["dmarc_details"] = dmarc_record.strip('"') if dmarc_record else "No DMARC record found"
+    except Exception as e:
+        results["DMARC"] = False
+        results["dmarc_details"] = f"Error retrieving DMARC record: {str(e)}"
 
     return results
 

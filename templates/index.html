@@ -62,38 +62,51 @@
 
                         <div class="result-subsection">
                             <h3>DNS Records <span class="tooltip" title="DNS records verify domain ownership and prevent email spoofing">ℹ️</span></h3>
-                            <ul>
-                                <li class="{% if result.dns_results.SPF == True %}good{% elif result.dns_results.SPF == 'Record Not Found' %}warning{% else %}bad{% endif %}">
-                                    <strong>SPF:</strong> 
-                                    {% if result.dns_results.SPF == True %}
-                                        Configured Correctly
-                                    {% elif result.dns_results.SPF == 'Record Not Found' %}
-                                        No SPF Record Found
-                                    {% else %}
-                                        SPF Configuration Issue
+                            
+                            <div class="record-row">
+                                <div class="record-content">
+                                    <span class="record-type">SPF:</span>
+                                    <div class="status-wrapper">
+                                        <span class="status">Configured Correctly</span>
+                                        <button class="expand-toggle" aria-label="Show SPF details" aria-expanded="false">▾</button>
+                                    </div>
+                                </div>
+                                <div class="record-details hidden">
+                                    {% if result.dns_results.spf_details %}
+                                        {{ result.dns_results.spf_details }}
                                     {% endif %}
-                                </li>
-                                <li class="{% if result.dns_results.DKIM == True %}good{% elif result.dns_results.DKIM == 'Record Not Found' %}warning{% else %}bad{% endif %}">
-                                    <strong>DKIM:</strong> 
-                                    {% if result.dns_results.DKIM == True %}
-                                        Configured Correctly
-                                    {% elif result.dns_results.DKIM == 'Record Not Found' %}
-                                        No DKIM Record Found
-                                    {% else %}
-                                        DKIM Configuration Issue
+                                </div>
+                            </div>
+
+                            <div class="record-row">
+                                <div class="record-content">
+                                    <span class="record-type">DKIM:</span>
+                                    <div class="status-wrapper">
+                                        <span class="status">Configured Correctly</span>
+                                        <button class="expand-toggle" aria-label="Show DKIM details" aria-expanded="false">▾</button>
+                                    </div>
+                                </div>
+                                <div class="record-details hidden">
+                                    {% if result.dns_results.dkim_details %}
+                                        {{ result.dns_results.dkim_details }}
                                     {% endif %}
-                                </li>
-                                <li class="{% if result.dns_results.DMARC == True %}good{% elif result.dns_results.DMARC == 'Record Not Found' %}warning{% else %}bad{% endif %}">
-                                    <strong>DMARC:</strong> 
-                                    {% if result.dns_results.DMARC == True %}
-                                        Configured Correctly
-                                    {% elif result.dns_results.DMARC == 'Record Not Found' %}
-                                        No DMARC Record Found
-                                    {% else %}
-                                        DMARC Configuration Issue
+                                </div>
+                            </div>
+
+                            <div class="record-row">
+                                <div class="record-content">
+                                    <span class="record-type">DMARC:</span>
+                                    <div class="status-wrapper">
+                                        <span class="status">Configured Correctly</span>
+                                        <button class="expand-toggle" aria-label="Show DMARC details" aria-expanded="false">▾</button>
+                                    </div>
+                                </div>
+                                <div class="record-details hidden">
+                                    {% if result.dns_results.dmarc_details %}
+                                        {{ result.dns_results.dmarc_details }}
                                     {% endif %}
-                                </li>
-                            </ul>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="result-subsection">
@@ -159,5 +172,6 @@
     </footer>
 
     <script src="{{ url_for('static', filename='js/domain-validation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dns-details.js') }}"></script>
 </body>
 </html>
