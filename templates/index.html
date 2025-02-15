@@ -72,8 +72,20 @@
                                     </div>
                                 </div>
                                 <div class="record-details hidden">
-                                    {% if result.dns_results.spf_details %}
-                                        {{ result.dns_results.spf_details }}
+                                    {% if result.dns_results.spf_analysis %}
+                                        <div class="record-analysis">
+                                            <div class="meta-row">
+                                                <span class="status">Status: <span class="highlight">Valid</span></span>
+                                                <span class="divider">•</span>
+                                                <span class="recommendation">{{ result.dns_results.spf_analysis.recommendations[0] }}</span>
+                                            </div>
+                                            <div class="points">
+                                                {% for point in result.dns_results.spf_analysis.analysis %}
+                                                    <div class="point">{{ point }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            <code class="raw-record">{{ result.dns_results.spf_analysis.raw_record }}</code>
+                                        </div>
                                     {% endif %}
                                 </div>
                             </div>
@@ -87,8 +99,22 @@
                                     </div>
                                 </div>
                                 <div class="record-details hidden">
-                                    {% if result.dns_results.dkim_details %}
-                                        {{ result.dns_results.dkim_details }}
+                                    {% if result.dns_results.dkim_analysis %}
+                                        <div class="record-analysis">
+                                            <div class="meta-row">
+                                                <span class="status">Status: <span class="highlight">{{ result.dns_results.dkim_analysis.status }}</span></span>
+                                                {% if result.dns_results.dkim_analysis.recommendations %}
+                                                    <span class="divider">•</span>
+                                                    <span class="recommendation">{{ result.dns_results.dkim_analysis.recommendations[0] }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="points">
+                                                {% for point in result.dns_results.dkim_analysis.analysis %}
+                                                    <div class="point">{{ point }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            <code class="raw-record">{{ result.dns_results.dkim_analysis.raw_record }}</code>
+                                        </div>
                                     {% endif %}
                                 </div>
                             </div>
@@ -102,8 +128,22 @@
                                     </div>
                                 </div>
                                 <div class="record-details hidden">
-                                    {% if result.dns_results.dmarc_details %}
-                                        {{ result.dns_results.dmarc_details }}
+                                    {% if result.dns_results.dmarc_analysis %}
+                                        <div class="record-analysis">
+                                            <div class="meta-row">
+                                                <span class="status">Status: <span class="highlight">{{ result.dns_results.dmarc_analysis.status }}</span></span>
+                                                {% if result.dns_results.dmarc_analysis.recommendations %}
+                                                    <span class="divider">•</span>
+                                                    <span class="recommendation">{{ result.dns_results.dmarc_analysis.recommendations[0] }}</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="points">
+                                                {% for point in result.dns_results.dmarc_analysis.analysis %}
+                                                    <div class="point">{{ point }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            <code class="raw-record">{{ result.dns_results.dmarc_analysis.raw_record }}</code>
+                                        </div>
                                     {% endif %}
                                 </div>
                             </div>

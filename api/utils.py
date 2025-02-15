@@ -13,44 +13,161 @@ BLACKLIST_SERVERS = [
     "bl.spamcop.net"
 ]
 
+def analyze_spf_record(spf_record):
+    """Analyze SPF record and provide detailed interpretation."""
+    if not spf_record:
+        return {
+            "status": "Not Found",
+            "analysis": "No SPF record found. This may allow email spoofing.",
+            "recommendations": ["Add an SPF record to prevent email spoofing"]
+        }
+    
+    mechanisms = spf_record.split()
+    analysis = []
+    recommendations = []
+    
+    # Check version
+    if mechanisms[0] != "v=spf1":
+        return {
+            "status": "Invalid",
+            "analysis": "Invalid SPF record format",
+            "recommendations": ["SPF record must start with v=spf1"]
+        }
+    
+    # Analyze each mechanism
+    for mech in mechanisms[1:]:
+        if mech.startswith("include:"):
+            domain = mech.split(":")[1]
+            analysis.append(f"Includes mail servers from {domain}")
+        elif mech.startswith("ip4:") or mech.startswith("ip6:"):
+            ip = mech.split(":")[1]
+            analysis.append(f"Allows sending from IP {ip}")
+        elif mech == "mx":
+            analysis.append("Allows sending from domain's MX records")
+        elif mech == "a":
+            analysis.append("Allows sending from domain's A records")
+        elif mech == "-all":
+            analysis.append("Strict policy - rejects all other senders")
+        elif mech == "~all":
+            analysis.append("Soft fail policy - marks other senders as suspicious")
+            recommendations.append("Consider using -all for stricter security")
+        elif mech == "?all":
+            analysis.append("Neutral policy - no opinion on other senders")
+            recommendations.append("Use -all or ~all instead of ?all for better security")
+    
+    return {
+        "status": "Valid",
+        "analysis": analysis,
+        "recommendations": recommendations,
+        "raw_record": spf_record
+    }
+
+def analyze_dkim_record(dkim_records):
+    """Analyze DKIM records and provide detailed interpretation."""
+    if not dkim_records:
+        return {
+            "status": "Not Found",
+            "analysis": ["No DKIM records found"],
+            "recommendations": ["Configure DKIM to improve email authentication"],
+            "raw_record": "No DKIM record found"
+        }
+    
+    analysis = []
+    recommendations = []
+    
+    for record in dkim_records:
+        selector = record.get('selector', '')
+        if 'v=DKIM1' in record.get('record', ''):
+            analysis.append(f"Includes DKIM key for selector {selector}")
+        if 'k=rsa' in record.get('record', ''):
+            analysis.append(f"Uses RSA encryption for {selector}")
+    
+    return {
+        "status": "Valid",
+        "analysis": analysis,
+        "recommendations": recommendations,
+        "raw_record": "\n".join(r.get('record', '') for r in dkim_records)
+    }
+
+def analyze_dmarc_record(dmarc_record):
+    """Analyze DMARC record and provide detailed interpretation."""
+    if not dmarc_record:
+        return {
+            "status": "Not Found",
+            "analysis": ["No DMARC record found"],
+            "recommendations": ["Configure DMARC to enforce email authentication policies"],
+            "raw_record": "No DMARC record found"
+        }
+    
+    analysis = []
+    recommendations = []
+    
+    if 'p=none' in dmarc_record:
+        analysis.append("Monitor mode - no enforcement actions taken")
+        recommendations.append("Consider using p=quarantine or p=reject for better security")
+    elif 'p=quarantine' in dmarc_record:
+        analysis.append("Quarantine mode - suspicious emails marked as spam")
+    elif 'p=reject' in dmarc_record:
+        analysis.append("Reject mode - failed messages are blocked")
+    
+    if 'pct=' in dmarc_record:
+        pct = dmarc_record.split('pct=')[1].split()[0].rstrip(';')  # Remove trailing semicolon
+        analysis.append(f"Policy applies to {pct}% of emails")
+    
+    return {
+        "status": "Valid",
+        "analysis": analysis,
+        "recommendations": recommendations,
+        "raw_record": dmarc_record
+    }
+
 def check_dns_records(domain):
     """Check SPF, DKIM, and DMARC records for a given domain."""
     results = {}
 
-    # Check SPF
+    # SPF Check (existing code)
     try:
         spf_records = dns.resolver.resolve(domain, "TXT")
-        spf_record = next((record.to_text() for record in spf_records if "v=spf1" in record.to_text()), None)
+        spf_record = next((record.to_text().strip('"') for record in spf_records if "v=spf1" in record.to_text()), None)
         results["SPF"] = bool(spf_record)
-        results["spf_details"] = spf_record.strip('"') if spf_record else "No SPF record found"
+        results["spf_analysis"] = analyze_spf_record(spf_record)
     except Exception as e:
         results["SPF"] = False
-        results["spf_details"] = f"Error retrieving SPF record: {str(e)}"
+        results["spf_analysis"] = {
+            "status": "Error",
+            "analysis": [f"Error retrieving SPF record: {str(e)}"],
+            "recommendations": ["Check DNS configuration"]
+        }
 
-    # Check DKIM
-    dkim_found = False
-    dkim_details = []
+    # DKIM Check
+    dkim_records_found = []
     for selector in DKIM_SELECTORS:
         try:
             dkim_records = dns.resolver.resolve(f"{selector}._domainkey.{domain}", "TXT")
-            dkim_record = dkim_records[0].to_text()
-            dkim_found = True
-            dkim_details.append(f"Selector '{selector}': {dkim_record.strip('\"')}")
+            for record in dkim_records:
+                dkim_records_found.append({
+                    'selector': selector,
+                    'record': record.to_text().strip('"')
+                })
         except:
             continue
+    
+    results["DKIM"] = bool(dkim_records_found)
+    results["dkim_analysis"] = analyze_dkim_record(dkim_records_found)
 
-    results["DKIM"] = dkim_found
-    results["dkim_details"] = "\n".join(dkim_details) if dkim_details else "No DKIM records found"
-
-    # Check DMARC
+    # DMARC Check
     try:
         dmarc_records = dns.resolver.resolve(f"_dmarc.{domain}", "TXT")
-        dmarc_record = next((record.to_text() for record in dmarc_records if "v=DMARC1" in record.to_text()), None)
+        dmarc_record = next((record.to_text().strip('"') for record in dmarc_records if "v=DMARC1" in record.to_text()), None)
         results["DMARC"] = bool(dmarc_record)
-        results["dmarc_details"] = dmarc_record.strip('"') if dmarc_record else "No DMARC record found"
+        results["dmarc_analysis"] = analyze_dmarc_record(dmarc_record)
     except Exception as e:
         results["DMARC"] = False
-        results["dmarc_details"] = f"Error retrieving DMARC record: {str(e)}"
+        results["dmarc_analysis"] = {
+            "status": "Error",
+            "analysis": [f"Error retrieving DMARC record: {str(e)}"],
+            "recommendations": ["Check DNS configuration"]
+        }
 
     return results
 
