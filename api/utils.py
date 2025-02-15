@@ -1,5 +1,7 @@
 import dns.resolver
 import whois
+import requests
+from datetime import datetime
 
 # Common DKIM selectors used by email providers
 DKIM_SELECTORS = ["default", "google", "selector1", "selector2"]
@@ -60,17 +62,79 @@ def check_blacklist_status(domain):
 
 
 def get_whois_info(domain):
-    """Retrieve WHOIS information for a given domain."""
+    """Retrieve WHOIS information for a given domain with fallback options."""
+    nameservers = get_nameservers_direct(domain)  # Get nameservers first
+    
+    # Try primary python-whois first
+    whois_info = try_python_whois(domain)
+    if whois_info.get("registrar") != "Lookup Failed":
+        whois_info['nameservers'] = nameservers or whois_info.get('nameservers', [])
+        return whois_info
+    
+    # If primary fails, try WHOIS API fallback
+    api_info = try_whois_api(domain)
+    if api_info:
+        api_info['nameservers'] = nameservers or api_info.get('nameservers', [])
+        return api_info
+        
+    # If both fail, return with direct nameservers
+    return {
+        "registrar": "Lookup Failed",
+        "creation_date": "Unknown",
+        "expiration_date": "Unknown",
+        "nameservers": nameservers
+    }
+
+def try_python_whois(domain):
+    """Try to get WHOIS info using python-whois library."""
     try:
         w = whois.whois(domain)
-        return {
-            "registrar": w.registrar,
-            "creation_date": str(w.creation_date),
-            "expiration_date": str(w.expiration_date),
-            "nameservers": w.name_servers
-        }
+        if w and hasattr(w, 'registrar'):
+            return {
+                "registrar": w.registrar if w.registrar else "Unknown",
+                "creation_date": str(w.creation_date) if w.creation_date else "Unknown",
+                "expiration_date": str(w.expiration_date) if w.expiration_date else "Unknown",
+                "nameservers": []  # We'll add nameservers from direct lookup
+            }
+    except Exception as e:
+        print(f"Python WHOIS lookup failed for {domain}: {str(e)}")
+    
+    return {"registrar": "Lookup Failed"}
+
+def try_whois_api(domain):
+    """Try to get WHOIS info using WHOIS API."""
+    try:
+        response = requests.get(f"https://rdap.org/domain/{domain}")
+        if response.status_code == 200:
+            data = response.json()
+            return {
+                "registrar": data.get('entities', [{}])[0].get('vcardArray', [[]])[1][3] if data.get('entities') else 'Unknown',
+                "creation_date": format_date(data.get('events', [{}])[0].get('eventDate')),
+                "expiration_date": "Not Available via RDAP",
+                "nameservers": []  # We'll add nameservers from direct lookup
+            }
+    except Exception as e:
+        print(f"RDAP lookup failed for {domain}: {str(e)}")
+    
+    return None
+
+def format_date(date_str):
+    """Format date string to consistent format."""
+    if not date_str:
+        return "Unknown"
+    try:
+        if isinstance(date_str, (list, tuple)):
+            date_str = date_str[0]
+        if isinstance(date_str, str):
+            # Try different date formats
+            for fmt in ["%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%d", "%d-%b-%Y"]:
+                try:
+                    return datetime.strptime(date_str, fmt).strftime("%Y-%m-%d")
+                except:
+                    continue
+        return str(date_str)
     except:
-        return {"error": "WHOIS lookup failed"}
+        return "Unknown"
 
 
 def get_registrar_info(registrar):
@@ -104,3 +168,17 @@ def get_nameserver_info(nameserver):
         return "Squarespace (Website Builder & DNS Provider)"
     else:
         return "Unknown Provider"
+
+def get_nameservers_direct(domain):
+    """Get nameservers directly through DNS query."""
+    try:
+        resolver = dns.resolver.Resolver()
+        resolver.timeout = 3
+        resolver.lifetime = 3
+        answers = resolver.resolve(domain, 'NS')
+        nameservers = [str(rdata.target).rstrip('.') for rdata in answers]
+        print(f"Found nameservers for {domain}: {nameservers}")  # Debug print
+        return nameservers
+    except Exception as e:
+        print(f"Direct NS lookup failed for {domain}: {str(e)}")
+        return []

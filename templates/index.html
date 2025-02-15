@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Health Checker</title>
+    <title>Nixie</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Email Health Checker</h1>
+        <h1><a href="{{ url_for('api.home') }}" class="home-link">Nixie <span class="beta-badge">BETA</span></a></h1>
         
         <div class="mode-selector">
             <button type="button" class="mode-btn active" data-mode="single">Single Domain</button>
@@ -47,7 +47,7 @@
 
         <div id="loading-spinner" class="hidden">
             <div class="spinner"></div>
-            <p>Analyzing domain health...</p>
+            <p>Analyzing domain...</p>
         </div>
 
         {% if error %}
@@ -112,21 +112,27 @@
                             <ul>
                                 <li>
                                     <strong>Registrar:</strong> 
-                                    {{ result.whois_info.registrar }} 
-                                    <span class="tooltip" title="{{ get_registrar_info(result.whois_info.registrar) }}">ℹ️</span>
+                                    {{ result.whois_info.registrar if result.whois_info.registrar else 'Not Available' }} 
+                                    {% if result.whois_info.registrar and result.whois_info.registrar != 'Limited WHOIS Data Available' %}
+                                        <span class="tooltip" title="{{ get_registrar_info(result.whois_info.registrar) }}">ℹ️</span>
+                                    {% endif %}
                                 </li>
-                                <li><strong>Creation Date:</strong> {{ result.whois_info.creation_date }}</li>
-                                <li><strong>Expiration Date:</strong> {{ result.whois_info.expiration_date }}</li>
+                                <li><strong>Creation Date:</strong> {{ result.whois_info.creation_date if result.whois_info.creation_date else 'Not Available' }}</li>
+                                <li><strong>Expiration Date:</strong> {{ result.whois_info.expiration_date if result.whois_info.expiration_date else 'Not Available' }}</li>
                                 <li>
                                     <strong>Nameservers:</strong>
-                                    <ul>
-                                        {% for ns in result.whois_info.nameservers %}
-                                            <li>
-                                                {{ ns }} 
-                                                <span class="tooltip" title="{{ get_nameserver_info(ns) }}">ℹ️</span>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
+                                    {% if result.whois_info.nameservers %}
+                                        <ul>
+                                            {% for ns in result.whois_info.nameservers %}
+                                                <li>
+                                                    {{ ns }} 
+                                                    <span class="tooltip" title="{{ get_nameserver_info(ns) }}">ℹ️</span>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <ul><li>No nameserver information available</li></ul>
+                                    {% endif %}
                                 </li>
                             </ul>
                         </div>
@@ -135,6 +141,12 @@
             </div>
         {% endif %}
     </div>
+
+    <footer class="footer">
+        <a href="https://github.com/OopsyJuice/email-health-checker/issues" target="_blank" class="footer-link">
+            Report Bug / Suggest Feature
+        </a>
+    </footer>
 
     <script src="{{ url_for('static', filename='js/domain-validation.js') }}"></script>
 </body>
