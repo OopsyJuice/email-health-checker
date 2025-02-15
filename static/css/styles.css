@@ -175,3 +175,69 @@ li {
         font-size: 14px;
     }
 }
+
+/* Add these styles */
+.domain-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: #00adb5;
+    color: #1e1e1e;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin: 4px;
+}
+
+.remove-tag {
+    background: none;
+    border: none;
+    color: #1e1e1e;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 4px;
+}
+
+.remove-tag:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+}
+
+.error-message {
+    color: #ff4b5c;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.domain-input:disabled {
+    background-color: #393e46;
+    cursor: not-allowed;
+}
+
+/* Mode selector styling */
+.mode-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.mode-btn {
+    flex: 1;
+    background-color: #393e46;
+    color: #eeeeee;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0; /* Override default button margin */
+}
+
+.mode-btn:hover {
+    background-color: #494f58;
+    transform: scale(1.02);
+}
+
+.mode-btn.active {
+    background-color: #00adb5;
+    color: #1e1e1e;
+}

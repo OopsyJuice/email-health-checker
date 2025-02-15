@@ -12,21 +12,36 @@ def home():
 @api_bp.route('/check-email-health', methods=['GET', 'POST'])
 def check_email_health():
     if request.method == 'POST':
-        domain = request.form.get('domain')
+        domain_mode = request.form.get('domain-mode', 'single')
+        
+        if domain_mode == 'single':
+            domain = request.form.get('domain')
+            domains = [domain] if domain else []
+        else:
+            domains_str = request.form.get('domains', '')
+            domains = [d.strip() for d in domains_str.split(',') if d.strip()]
     else:
         domain = request.args.get('domain')
+        domains = [domain] if domain else []
 
-    if not domain:
+    if not domains:
         return render_template("index.html", error="Domain parameter is required")
 
-    dns_results = check_dns_records(domain)
-    blacklist_results = check_blacklist_status(domain)
-    whois_info = get_whois_info(domain)
+    if len(domains) > 5:  # Enforce 5 domain limit
+        return render_template("index.html", error="Maximum 5 domains allowed")
+
+    results = []
+    for domain in domains:
+        domain_result = {
+            'domain': domain,
+            'dns_results': check_dns_records(domain),
+            'blacklist_results': check_blacklist_status(domain),
+            'whois_info': get_whois_info(domain)
+        }
+        results.append(domain_result)
 
     return render_template("index.html", 
-                           domain=domain, 
-                           dns_results=dns_results, 
-                           blacklist_results=blacklist_results, 
-                           whois_info=whois_info,
-                           get_registrar_info=get_registrar_info,
-                           get_nameserver_info=get_nameserver_info)
+                         domain_mode=domain_mode,
+                         results=results,
+                         get_registrar_info=get_registrar_info,
+                         get_nameserver_info=get_nameserver_info)
