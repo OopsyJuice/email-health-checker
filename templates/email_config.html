@@ -51,9 +51,20 @@ document.addEventListener('DOMContentLoaded', function() {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             
+            // Show loading container immediately
             if (loadingContainer) {
                 loadingContainer.classList.remove('hidden');
             }
+
+            // Add progress updates
+            let currentStep = 1;
+            const progressInterval = setInterval(() => {
+                const currentStepEl = document.getElementById(`step${currentStep}`);
+                if (currentStepEl) {
+                    currentStepEl.classList.add('active');
+                    currentStep = Math.min(currentStep + 1, 4);
+                }
+            }, 1000);
             
             fetch(this.action, {
                 method: 'POST',
@@ -64,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.text())
             .then(html => {
+                clearInterval(progressInterval);
                 if (resultsContainer) {
                     resultsContainer.innerHTML = html;
                 }
@@ -72,6 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
+                clearInterval(progressInterval);
                 console.error('Error:', error);
                 if (loadingContainer) {
                     loadingContainer.classList.add('hidden');

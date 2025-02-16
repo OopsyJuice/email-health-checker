@@ -693,13 +693,13 @@ li {
 }
 
 .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 3px solid rgba(0, 173, 181, 0.3);
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top: 3px solid #00ffff;
     border-radius: 50%;
-    border-top-color: #00adb5;
+    width: 24px;
+    height: 24px;
     animation: spin 1s linear infinite;
-    margin: 0 auto 1rem;
+    margin: 0 auto 20px;
 }
 
 .loading-text {
@@ -709,44 +709,39 @@ li {
 }
 
 .progress-steps {
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    margin-top: 20px;
+    padding-left: 10px;
+    position: relative;
 }
 
 .step {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.9rem;
-    padding-left: 24px;
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+    margin: 10px 0;
+    color: #00ffff;
+    padding-left: 25px;
     position: relative;
-    transition: color 0.3s ease;
 }
 
 .step::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(0, 173, 181, 0.3);
+    content: '';
+    position: relative;
+    width: 12px;
+    height: 12px;
+    background: #00ffff;
     border-radius: 50%;
-    transition: all 0.3s ease;
+    margin-right: 12px;
+    opacity: 0.3;
+    display: inline-block;
 }
 
 .step.active {
-    color: #fff;
+    opacity: 1;
 }
 
 .step.active::before {
-    border-color: #00adb5;
-    background: #00adb5;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
+    opacity: 1;
 }
 
 .hidden {
@@ -770,48 +765,73 @@ li {
 }
 
 .recommendation-item {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    padding: 12px;
-    margin-bottom: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border-left: 4px solid transparent;
 }
 
-.rec-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
+.recommendation-item.critical {
+    border-left-color: #ff4444;
+}
+
+.recommendation-item.high {
+    border-left-color: #ff8800;
+}
+
+.recommendation-item.medium {
+    border-left-color: #ffbb33;
 }
 
 .severity-badge {
-    padding: 2px 6px;
+    display: inline-block;
+    padding: 5px 10px;
     border-radius: 4px;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.critical .severity-badge { background: rgba(255, 68, 68, 0.15); color: #ff4444; }
+.high .severity-badge { background: rgba(255, 136, 0, 0.15); color: #ff8800; }
+.medium .severity-badge { background: rgba(255, 187, 51, 0.15); color: #ffbb33; }
+
+.issue {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin: 0 0 20px 0;
     font-weight: 500;
-}
-
-.recommendation-item.high .severity-badge {
-    background: rgba(255, 75, 92, 0.2);
-    color: #ff4b5c;
-}
-
-.recommendation-item.medium .severity-badge {
-    background: rgba(255, 187, 0, 0.2);
-    color: #ffbb00;
-}
-
-.recommendation-item.low .severity-badge {
-    background: rgba(0, 173, 181, 0.2);
-    color: #00adb5;
+    text-align: center;
+    width: 100%;
+    display: block;
 }
 
 .rec-details {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
-    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: left;
 }
 
-.detail-line.empty {
-    color: rgba(255, 255, 255, 0.5);
-    font-style: italic;
+.impact, .fix {
+    display: flex;
+    margin: 12px 0;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.label {
+    color: #00ffff;
+    opacity: 0.9;
+    min-width: 70px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.text {
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
+    text-align: left;
+    padding-left: 8px;
 }

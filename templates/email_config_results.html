@@ -47,5 +47,32 @@
             {% endif %}
         </div>
     </div>
+
+    <!-- Recommendations Section -->
+    {% if recommendations %}
+    <div class="test-group">
+        <h3>Recommendations</h3>
+        <div class="recommendations">
+            {% for rec in recommendations %}
+                <div class="recommendation-item {{ rec.severity }}">
+                    <div class="rec-header">
+                        <span class="severity-badge">{{ rec.severity|upper }}</span>
+                        <h4 class="issue">{{ rec.issue }}</h4>
+                    </div>
+                    <div class="rec-details">
+                        <div class="impact">
+                            <span class="label">Impact:</span>
+                            <span class="text">{{ rec.impact }}</span>
+                        </div>
+                        <div class="fix">
+                            <span class="label">Fix:</span>
+                            <span class="text">{{ rec.fix }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endif %} 

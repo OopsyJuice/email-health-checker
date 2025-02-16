@@ -63,16 +63,17 @@ def security():
     return render_template('security.html')
 
 def test_port_with_banner(host, port, timeout=2):
-    """Test if a port is open and collect banner if available."""
+    """Tests SMTP server connectivity and retrieves capability information"""
     try:
         with socket.create_connection((host, port), timeout=timeout) as sock:
             try:
-                # Try to get banner
+                # Set socket timeout for banner reading
+                sock.settimeout(2)
                 banner = sock.recv(1024).decode().strip()
                 return True, banner
-            except:
+            except socket.timeout:
                 return True, None
-    except:
+    except (socket.timeout, socket.error):
         return False, None
 
 @api_bp.route('/run-mail-tests', methods=['POST'])
@@ -80,6 +81,11 @@ def run_mail_tests():
     domain = request.form.get('domain')
     if not domain:
         return render_template('email_config.html', error="Domain is required")
+    
+    # Set a shorter timeout for DNS resolver
+    resolver = dns.resolver.Resolver()
+    resolver.timeout = 2
+    resolver.lifetime = 4
     
     results = {
         'domain': domain,
@@ -125,11 +131,14 @@ def run_mail_tests():
     except Exception as e:
         results['error'] = str(e)
     
+    # Generate recommendations before returning
+    recommendations = generate_recommendations(results)
+    
     # Check if it's an AJAX request
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return render_template('email_config_results.html', results=results)
+        return render_template('email_config_results.html', results=results, recommendations=recommendations)
     
-    return render_template('email_config.html', results=results)
+    return render_template('email_config.html', results=results, recommendations=recommendations)
 
 def get_smtp_info(host):
     """Get SMTP server information."""
@@ -164,28 +173,43 @@ def check_ptr_record(host):
         return False
 
 def generate_recommendations(results):
-    """Generate actionable recommendations based on test results."""
+    """Analyzes test results and returns prioritized configuration fixes"""
     recommendations = []
     
+    # MX Record Recommendations
     if not results['mx_records']:
         recommendations.append({
-            'severity': 'high',
-            'message': 'No MX records found. Configure MX records to receive email.',
-            'details': 'MX records are required for receiving email. Contact your DNS provider to set them up.'
+            'severity': 'critical',
+            'issue': 'Missing MX Records',
+            'impact': 'Emails cannot be delivered to your domain',
+            'fix': 'Configure MX records with your email provider\'s mail servers'
         })
-    
-    if not any([results['port_25']['open'], results['port_465']['open'], results['port_587']['open']]):
-        recommendations.append({
+
+    # Port Configuration Recommendations
+    port_recommendations = []
+    if not results['port_25']['open'] and not results['port_587']['open']:
+        port_recommendations.append({
             'severity': 'high',
-            'message': 'No SMTP ports are open. Configure at least one SMTP port.',
-            'details': 'At minimum, port 25 (SMTP) or 587 (SMTP with TLS) should be open for email delivery.'
+            'issue': 'No SMTP ports available',
+            'impact': 'Unable to send or receive emails',
+            'fix': 'Open port 587 (recommended) or port 25 for SMTP traffic'
         })
-    
+    elif results['port_25']['open'] and not results['port_587']['open']:
+        port_recommendations.append({
+            'severity': 'medium',
+            'issue': 'Using legacy SMTP port',
+            'impact': 'Reduced email security',
+            'fix': 'Configure and use port 587 with TLS instead of port 25'
+        })
+
+    # PTR Record Recommendations
     if not results['ptr_record']:
         recommendations.append({
             'severity': 'medium',
-            'message': 'Missing PTR record. Configure reverse DNS.',
-            'details': 'PTR records help prevent your emails from being marked as spam.'
+            'issue': 'Missing PTR Record',
+            'impact': 'Emails may be marked as spam',
+            'fix': 'Configure reverse DNS (PTR) records with your hosting provider'
         })
-    
+
+    recommendations.extend(port_recommendations)
     return recommendations
