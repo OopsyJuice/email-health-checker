@@ -1,0 +1,184 @@
+[2025-02-16 01:14:36,687] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2025-02-16 01:14:36,687] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2025-02-16 01:14:36,688] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:14:37,388] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:14:37,395] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:15:28,639] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\run.py', reloading
+[2025-02-16 01:15:28,698] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:15:29,521] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:15:29,527] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:15:31,623] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\run.py', reloading
+[2025-02-16 01:15:31,665] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:15:32,425] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:15:32,430] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:15:48,348] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:15:48] "[35m[1mGET / HTTP/1.1[0m" 500 -
+[2025-02-16 01:15:48,434] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:15:48] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[2025-02-16 01:15:48,604] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:15:48] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[2025-02-16 01:15:48,953] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:15:48] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=Fq7IkqtM7IdcdgkpfvMx HTTP/1.1" 200 -
+[2025-02-16 01:15:49,207] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:15:49] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[2025-02-16 01:16:47,222] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\api\\__init__.py', reloading
+[2025-02-16 01:16:47,268] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:16:47,996] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:16:48,001] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:16:50,086] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\api\\__init__.py', reloading
+[2025-02-16 01:16:50,127] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:16:50,861] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:16:50,867] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:17:00,329] INFO in logger: Access: GET /
+[2025-02-16 01:17:00,329] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:00] "GET / HTTP/1.1" 200 -
+[2025-02-16 01:17:00,393] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:00] "GET /static/css/styles.css HTTP/1.1" 200 -
+[2025-02-16 01:17:00,563] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:00] "GET /static/js/domain-validation.js HTTP/1.1" 200 -
+[2025-02-16 01:17:00,656] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:00] "GET /static/js/dns-details.js HTTP/1.1" 200 -
+[2025-02-16 01:17:01,027] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:01] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+[2025-02-16 01:17:03,215] INFO in logger: Access: GET /email-config
+[2025-02-16 01:17:03,216] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:03] "GET /email-config HTTP/1.1" 200 -
+[2025-02-16 01:17:03,524] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:03] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:04,897] INFO in logger: Access: GET /
+[2025-02-16 01:17:04,897] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:04] "GET / HTTP/1.1" 200 -
+[2025-02-16 01:17:04,989] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:04] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:05,159] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:05] "[36mGET /static/js/domain-validation.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:05,221] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:05] "[36mGET /static/js/dns-details.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:06,001] INFO in logger: Access: GET /email-config
+[2025-02-16 01:17:06,001] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:06] "GET /email-config HTTP/1.1" 200 -
+[2025-02-16 01:17:06,312] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:06] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:07,571] INFO in logger: Access: GET /
+[2025-02-16 01:17:07,571] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:07] "GET / HTTP/1.1" 200 -
+[2025-02-16 01:17:07,678] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:07] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:07,834] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:07] "[36mGET /static/js/domain-validation.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:07,896] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:07] "[36mGET /static/js/dns-details.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:10,131] INFO in logger: Access: GET /email-config
+[2025-02-16 01:17:10,131] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:10] "GET /email-config HTTP/1.1" 200 -
+[2025-02-16 01:17:10,431] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:10] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:11,331] INFO in logger: Access: GET /
+[2025-02-16 01:17:11,332] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:11] "GET / HTTP/1.1" 200 -
+[2025-02-16 01:17:11,427] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:11] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:11,583] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:11] "[36mGET /static/js/domain-validation.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:11,658] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:11] "[36mGET /static/js/dns-details.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:17:25,344] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:25] "[35m[1mPOST /run-mail-tests HTTP/1.1[0m" 500 -
+[2025-02-16 01:17:25,647] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:25] "GET /run-mail-tests?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[2025-02-16 01:17:25,679] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:25] "GET /run-mail-tests?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[2025-02-16 01:17:26,010] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:26] "GET /run-mail-tests?__debugger__=yes&cmd=resource&f=console.png&s=tnrgBXcd4Oi6nYURIACh HTTP/1.1" 200 -
+[2025-02-16 01:17:26,275] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:17:26] "GET /run-mail-tests?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[2025-02-16 01:18:16,848] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\api\\routes.py', reloading
+[2025-02-16 01:18:16,896] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:18:17,625] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:18:17,631] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:18:26,111] INFO in logger: Access: GET /
+[2025-02-16 01:18:26,111] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:18:26] "GET / HTTP/1.1" 200 -
+[2025-02-16 01:18:26,173] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:18:26] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:18:26,363] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:18:26] "[36mGET /static/js/domain-validation.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:18:26,442] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:18:26] "[36mGET /static/js/dns-details.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:19:19,703] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:19:19] "[35m[1mPOST /run-mail-tests HTTP/1.1[0m" 500 -
+[2025-02-16 01:19:19,732] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:19:19] "[36mGET /run-mail-tests?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:19:19,948] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:19:19] "[36mGET /run-mail-tests?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:19:20,276] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:19:20] "GET /run-mail-tests?__debugger__=yes&cmd=resource&f=console.png&s=nEnoiOMqU78fggI0nMtT HTTP/1.1" 200 -
+[2025-02-16 01:19:51,809] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\api\\security\\headers.py', reloading
+[2025-02-16 01:19:51,854] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:19:52,618] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:19:52,623] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:19:57,793] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\api\\routes.py', reloading
+[2025-02-16 01:19:57,836] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:19:58,556] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:19:58,561] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:20:03,471] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:20:03] "[35m[1mPOST /run-mail-tests HTTP/1.1[0m" 500 -
+[2025-02-16 01:20:03,532] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:20:03] "[36mGET /run-mail-tests?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:20:03,717] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:20:03] "[36mGET /run-mail-tests?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:20:04,043] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:20:04] "GET /run-mail-tests?__debugger__=yes&cmd=resource&f=console.png&s=Nuoe407rhRl0mTIsOc5s HTTP/1.1" 200 -
+[2025-02-16 01:20:04,306] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:20:04] "[36mGET /run-mail-tests?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-02-16 01:20:08,445] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:20:08] "[35m[1mGET / HTTP/1.1[0m" 500 -
+[2025-02-16 01:20:08,742] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:20:08] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:20:08,773] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:20:08] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:20:09,089] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:20:09] "GET /?__debugger__=yes&cmd=resource&f=console.png&s=Nuoe407rhRl0mTIsOc5s HTTP/1.1" 200 -
+[2025-02-16 01:20:09,355] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:20:09] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[2025-02-16 01:22:06,798] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.206:5000
+[2025-02-16 01:22:06,798] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2025-02-16 01:22:06,799] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:22:07,520] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:22:07,525] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:22:15,930] INFO in logger: Access: GET /
+[2025-02-16 01:22:15,930] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:22:15] "GET / HTTP/1.1" 200 -
+[2025-02-16 01:22:15,994] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:22:15] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:22:16,180] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:22:16] "[36mGET /static/js/domain-validation.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:22:16,260] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:22:16] "[36mGET /static/js/dns-details.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:22:21,272] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:22:21] "[35m[1mPOST /run-mail-tests HTTP/1.1[0m" 500 -
+[2025-02-16 01:22:21,294] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:22:21] "[36mGET /run-mail-tests?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:22:21,531] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:22:21] "[36mGET /run-mail-tests?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:22:21,849] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:22:21] "GET /run-mail-tests?__debugger__=yes&cmd=resource&f=console.png&s=fIGw4G3Icg5hS1Nk2uSF HTTP/1.1" 200 -
+[2025-02-16 01:23:07,779] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.206:5000
+[2025-02-16 01:23:07,779] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2025-02-16 01:23:07,780] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:23:08,531] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:23:08,537] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:23:14,528] INFO in logger: Access: GET /
+[2025-02-16 01:23:14,528] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:23:14] "GET / HTTP/1.1" 200 -
+[2025-02-16 01:23:14,589] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:23:14] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:23:14,780] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:23:14] "[36mGET /static/js/domain-validation.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:23:14,850] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:23:14] "[36mGET /static/js/dns-details.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:23:21,983] INFO in logger: Security event: domain_test
+[2025-02-16 01:23:21,984] INFO in logger: Performance: mail_tests
+[2025-02-16 01:23:21,984] INFO in logger: Access: POST /run-mail-tests
+[2025-02-16 01:23:21,984] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:23:21] "POST /run-mail-tests HTTP/1.1" 200 -
+[2025-02-16 01:24:11,057] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\api\\routes.py', reloading
+[2025-02-16 01:24:11,115] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:24:11,904] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:24:11,909] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:24:16,047] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\api\\async_utils.py', reloading
+[2025-02-16 01:24:16,091] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:25:24,826] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.206:5000
+[2025-02-16 01:25:24,826] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2025-02-16 01:25:24,827] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:25:25,572] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:25:25,577] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:25:27,885] INFO in logger: Access: GET /
+[2025-02-16 01:25:27,885] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:25:27] "GET / HTTP/1.1" 200 -
+[2025-02-16 01:25:28,174] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:25:28] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:25:28,199] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:25:28] "[36mGET /static/js/domain-validation.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:25:28,199] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:25:28] "[36mGET /static/js/dns-details.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:25:33,852] ERROR in logger: No MX records found
+Traceback (most recent call last):
+  File "C:\Users\Hunter\repos\email-health-checker\api\routes.py", line 163, in run_mail_tests
+    raise DNSError("No MX records found", {"domain": domain})
+api.security.error_handler.DNSError: No MX records found
+[2025-02-16 01:25:33,853] INFO in logger: Performance: mail_tests
+[2025-02-16 01:25:33,853] ERROR in error_handler: Domain Health Error: No MX records found
+Traceback (most recent call last):
+  File "C:\Users\Hunter\repos\email-health-checker\api\security\error_handler.py", line 52, in wrapper
+    result = func(*args, **kwargs)
+  File "C:\Users\Hunter\repos\email-health-checker\api\logging\logger.py", line 80, in sync_wrapper
+    result = func(*args, **kwargs)
+  File "C:\Users\Hunter\repos\email-health-checker\api\routes.py", line 163, in run_mail_tests
+    raise DNSError("No MX records found", {"domain": domain})
+api.security.error_handler.DNSError: No MX records found
+[2025-02-16 01:25:33,854] INFO in logger: Access: POST /run-mail-tests
+[2025-02-16 01:25:33,854] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:25:33] "POST /run-mail-tests HTTP/1.1" 200 -
+[2025-02-16 01:26:31,213] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\api\\async_utils.py', reloading
+[2025-02-16 01:26:31,279] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:26:32,113] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:26:32,118] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:26:36,257] INFO in _internal:  * Detected change in 'C:\\Users\\Hunter\\repos\\email-health-checker\\api\\routes.py', reloading
+[2025-02-16 01:26:36,307] INFO in _internal:  * Restarting with stat
+[2025-02-16 01:26:37,107] WARNING in _internal:  * Debugger is active!
+[2025-02-16 01:26:37,113] INFO in _internal:  * Debugger PIN: 176-672-921
+[2025-02-16 01:26:44,675] INFO in logger: Access: GET /
+[2025-02-16 01:26:44,675] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:26:44] "GET / HTTP/1.1" 200 -
+[2025-02-16 01:26:44,962] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:26:44] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:26:44,991] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:26:44] "[36mGET /static/js/domain-validation.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:26:44,991] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:26:44] "[36mGET /static/js/dns-details.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:27:39,242] INFO in logger: Performance: mail_tests
+[2025-02-16 01:27:39,242] INFO in logger: Access: POST /run-mail-tests
+[2025-02-16 01:27:39,243] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:27:39] "POST /run-mail-tests HTTP/1.1" 200 -
+[2025-02-16 01:29:21,572] INFO in logger: Access: GET /
+[2025-02-16 01:29:21,573] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:29:21] "GET / HTTP/1.1" 200 -
+[2025-02-16 01:29:21,591] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:29:21] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+[2025-02-16 01:29:21,809] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:29:21] "[36mGET /static/js/domain-validation.js HTTP/1.1[0m" 304 -
+[2025-02-16 01:29:21,903] INFO in _internal: 127.0.0.1 - - [16/Feb/2025 01:29:21] "[36mGET /static/js/dns-details.js HTTP/1.1[0m" 304 -

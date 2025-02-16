@@ -1,0 +1,14 @@
+[2025-02-16 01:25:33,852] ERROR in logger: No MX records found
+Traceback (most recent call last):
+  File "C:\Users\Hunter\repos\email-health-checker\api\routes.py", line 163, in run_mail_tests
+    raise DNSError("No MX records found", {"domain": domain})
+api.security.error_handler.DNSError: No MX records found
+[2025-02-16 01:25:33,853] ERROR in error_handler: Domain Health Error: No MX records found
+Traceback (most recent call last):
+  File "C:\Users\Hunter\repos\email-health-checker\api\security\error_handler.py", line 52, in wrapper
+    result = func(*args, **kwargs)
+  File "C:\Users\Hunter\repos\email-health-checker\api\logging\logger.py", line 80, in sync_wrapper
+    result = func(*args, **kwargs)
+  File "C:\Users\Hunter\repos\email-health-checker\api\routes.py", line 163, in run_mail_tests
+    raise DNSError("No MX records found", {"domain": domain})
+api.security.error_handler.DNSError: No MX records found
