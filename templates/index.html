@@ -143,6 +143,31 @@
                                     {% endif %}
                                 </div>
                             </div>
+
+                            {% if result.dns_results.MX %}
+                                <div class="record-row">
+                                    <div class="record-content">
+                                        <span class="record-type">MX:</span>
+                                        <div class="status-wrapper">
+                                            <span class="status">{{ result.dns_results.mx_analysis.status }}</span>
+                                            <button class="expand-toggle" aria-label="Show MX details" aria-expanded="false">▾</button>
+                                        </div>
+                                    </div>
+                                    <div class="record-details hidden">
+                                        <div class="points">
+                                            {% for point in result.dns_results.mx_analysis.analysis %}
+                                                <div class="point">{{ point }}</div>
+                                            {% endfor %}
+                                            {% for recommendation in result.dns_results.mx_analysis.recommendations %}
+                                                <div class="point recommendation">{{ recommendation }}</div>
+                                            {% endfor %}
+                                        </div>
+                                        {% if result.dns_results.mx_analysis.raw_record %}
+                                            <code class="raw-record" style="white-space: pre-wrap;">{{ result.dns_results.mx_analysis.raw_record }}</code>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="result-subsection">

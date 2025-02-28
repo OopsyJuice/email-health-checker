@@ -122,7 +122,7 @@ def analyze_dmarc_record(dmarc_record):
     }
 
 def check_dns_records(domain):
-    """Check SPF, DKIM, and DMARC records for a given domain."""
+    """Check SPF, DKIM, DMARC, and MX records for a given domain."""
     results = {}
 
     # SPF Check (existing code)
@@ -167,6 +167,32 @@ def check_dns_records(domain):
             "status": "Error",
             "analysis": [f"Error retrieving DMARC record: {str(e)}"],
             "recommendations": ["Check DNS configuration"]
+        }
+
+    # MX Record Check
+    try:
+        mx_records = dns.resolver.resolve(domain, "MX")
+        mx_results = sorted([
+            {
+                'priority': record.preference,
+                'hostname': record.exchange.to_text(omit_final_dot=True)
+            } for record in mx_records
+        ], key=lambda x: x['priority'])
+        
+        results["MX"] = bool(mx_records)
+        results["mx_analysis"] = {
+            "status": "Configured",
+            "analysis": [],
+            "recommendations": [],
+            "raw_record": "\n".join([f"{r['hostname']}" for r in mx_results])
+        }
+    except Exception as e:
+        results["MX"] = False
+        results["mx_analysis"] = {
+            "status": "Error",
+            "analysis": [],
+            "recommendations": ["Check DNS configuration"],
+            "raw_record": ""
         }
 
     return results
