@@ -5,6 +5,7 @@ import dns.resolver
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import partial
 from api.security.headers import EmailHeaderAnalyzer
+from mail_security import detect_mail_provider
 
 api_bp = Blueprint('api', __name__)
 
@@ -105,13 +106,21 @@ def run_mail_tests():
         'port_587': {'open': False, 'banner': None},
         'mx_records': [],
         'ptr_record': False,
-        'server_details': []
+        'server_details': [],
+        'providers': None,  # Will store provider detection results
+        'security_risk': None  # Will store security risk information
     }
     
     try:
         # Test MX records
         mx_records = dns.resolver.resolve(domain, 'MX')
+        mx_list = [(str(mx.exchange), mx.preference) for mx in mx_records]
         results['mx_records'] = [str(mx.exchange) for mx in mx_records]
+        
+        # Detect mail providers
+        provider_results = detect_mail_provider(mx_list)
+        results['providers'] = provider_results['providers']
+        results['security_risk'] = provider_results['security_risk']
         
         # Use a set to prevent duplicate server details
         seen_details = set()
@@ -196,15 +205,34 @@ def generate_recommendations(results):
             'fix': 'Configure MX records with your email provider\'s mail servers'
         })
 
+    # Provider Security Risk Recommendations
+    if results.get('security_risk'):
+        recommendations.append({
+            'severity': results['security_risk']['risk_level'].lower(),
+            'issue': results['security_risk']['description'],
+            'impact': results['security_risk']['impact'],
+            'fix': results['security_risk']['recommendation']
+        })
+
     # Port Configuration Recommendations
     port_recommendations = []
     if not results['port_25']['open'] and not results['port_587']['open']:
-        port_recommendations.append({
-            'severity': 'high',
-            'issue': 'No SMTP ports available',
-            'impact': 'Unable to send or receive emails',
-            'fix': 'Open port 587 (recommended) or port 25 for SMTP traffic'
-        })
+        # Check if using a security gateway
+        using_gateway = any(p['type'] == 'Security Gateway' for p in results.get('providers', []))
+        if using_gateway:
+            port_recommendations.append({
+                'severity': 'info',
+                'issue': 'Mail ports appear closed',
+                'impact': 'This is expected when using a security gateway',
+                'fix': 'Verify with your security gateway provider that mail flow is configured correctly'
+            })
+        else:
+            port_recommendations.append({
+                'severity': 'high',
+                'issue': 'No SMTP ports available',
+                'impact': 'Unable to send or receive emails',
+                'fix': 'Open port 587 (recommended) or port 25 for SMTP traffic'
+            })
     elif results['port_25']['open'] and not results['port_587']['open']:
         port_recommendations.append({
             'severity': 'medium',

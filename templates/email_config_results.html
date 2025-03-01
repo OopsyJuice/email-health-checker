@@ -34,6 +34,47 @@
         </div>
     </div>
 
+    <!-- Mail Provider Information -->
+    {% if results.providers %}
+    <div class="test-group">
+        <h3>Mail Provider Information</h3>
+        <div class="test-results">
+            {% for provider in results.providers %}
+            <div class="test-item provider-item">
+                <span class="test-name">
+                    <i class="fas fa-{% if provider.type == 'Security Gateway' %}shield-alt{% else %}envelope{% endif %}" 
+                       title="{{ provider.type }}"></i>
+                    {{ provider.name }}
+                    <span class="provider-tooltip" title="{% if provider.type == 'Security Gateway' %}Security gateways provide additional email filtering and protection{% else %}Direct mail provider for sending and receiving email{% endif %}">
+                        <i class="fas fa-info-circle"></i>
+                    </span>
+                </span>
+                <span class="test-status" data-type="{{ provider.type }}">
+                    {{ provider.type }}
+                    {% if provider.hostname %}
+                    <span class="hostname-detail">{{ provider.hostname }}</span>
+                    {% endif %}
+                </span>
+            </div>
+            {% endfor %}
+            {% if results.security_risk %}
+            <div class="test-item bad security-risk">
+                <span class="test-name">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Security Risk Detected
+                    <span class="provider-tooltip" title="{{ results.security_risk.description }}">
+                        <i class="fas fa-info-circle"></i>
+                    </span>
+                </span>
+                <span class="test-status" data-risk-level="{{ results.security_risk.risk_level }}">
+                    {{ results.security_risk.risk_level }}
+                </span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
     <!-- Server Details -->
     <div class="test-group">
         <h3>Server Details</h3>

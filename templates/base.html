@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Nixie{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     <nav class="main-nav">
@@ -32,6 +34,22 @@
     <main class="content">
         {% block content %}{% endblock %}
     </main>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="https://github.com/OopsyJuice/email-health-checker/issues" target="_blank" class="footer-link">
+                Report Bug / Suggest Feature
+            </a>
+            <span class="footer-divider">•</span>
+            <a href="https://ode.fm" target="_blank" class="footer-link">
+                Check out Ode.fm
+            </a>
+            <span class="footer-divider">•</span>
+            <a href="https://techcierge.io" target="_blank" class="footer-link">
+                Check out Techcierge.io
+            </a>
+        </div>
+    </footer>
 
     {% block scripts %}{% endblock %}
 </body>
