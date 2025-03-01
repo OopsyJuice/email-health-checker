@@ -4,6 +4,7 @@ import socket
 import dns.resolver
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import partial
+from api.security.headers import EmailHeaderAnalyzer
 
 api_bp = Blueprint('api', __name__)
 
@@ -54,8 +55,18 @@ def check_email_health():
 def email_config():
     return render_template('email_config.html')
 
-@api_bp.route('/headers')
+@api_bp.route('/headers', methods=['GET', 'POST'])
 def headers():
+    if request.method == 'POST':
+        raw_headers = request.form.get('headers')
+        if not raw_headers:
+            return jsonify({'status': 'error', 'message': 'Email headers are required'})
+        
+        analyzer = EmailHeaderAnalyzer(raw_headers)
+        results = analyzer.analyze()
+        
+        return render_template('headers.html', results=results)
+    
     return render_template('headers.html')
 
 @api_bp.route('/security')

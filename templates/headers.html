@@ -1,8 +1,283 @@
 {% extends "base.html" %}
 
-{% block title %}Headers Analysis - Domain Health{% endblock %}
+{% block title %}Email Headers Analysis - Domain Health{% endblock %}
 
 {% block content %}
-    <h1>Headers Analysis</h1>
-    <!-- Headers analysis content will go here -->
+<!-- Help Section -->
+<div class="help-section">
+    <button class="help-toggle" onclick="toggleHeaderHelp()">
+        <i class="fas fa-question-circle help-icon"></i> Need help getting headers?
+    </button>
+    <div class="header-help-content" id="headerHelp">
+        <div class="email-client-selector">
+            <h4 class="help-title">Select your email client:</h4>
+            <div class="client-option" onclick="showClientInstructions('gmail')">
+                <i class="fab fa-google"></i>
+                <span>Gmail</span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="client-option" onclick="showClientInstructions('outlook-web')">
+                <i class="fab fa-microsoft"></i>
+                <span>Outlook (Web)</span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="client-option" onclick="showClientInstructions('outlook-desktop')">
+                <i class="fas fa-desktop"></i>
+                <span>Outlook (Desktop)</span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="client-option" onclick="showClientInstructions('apple')">
+                <i class="fab fa-apple"></i>
+                <span>Apple Mail</span>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+        
+        <!-- Individual client instructions (hidden by default) -->
+        <div class="client-instructions" id="gmail-instructions">
+            <div class="instructions-header">
+                <button class="back-button" onclick="showClientSelector()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h4><i class="fab fa-google"></i> Gmail</h4>
+            </div>
+            <ol>
+                <li>Open the email message</li>
+                <li>Click the three dots (More actions) in the top right</li>
+                <li>Select "Show original"</li>
+                <li>Click "Copy to clipboard" or select all text</li>
+            </ol>
+        </div>
+
+        <div class="client-instructions" id="outlook-web-instructions">
+            <div class="instructions-header">
+                <button class="back-button" onclick="showClientSelector()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h4><i class="fab fa-microsoft"></i> Outlook (Web)</h4>
+            </div>
+            <ol>
+                <li>Open the email message</li>
+                <li>Click the three dots (...) in the top right</li>
+                <li>Select "View message details"</li>
+                <li>Copy the displayed headers</li>
+            </ol>
+        </div>
+
+        <div class="client-instructions" id="outlook-desktop-instructions">
+            <div class="instructions-header">
+                <button class="back-button" onclick="showClientSelector()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h4><i class="fas fa-desktop"></i> Outlook (Desktop)</h4>
+            </div>
+            <ol>
+                <li>Double-click to open the email in a new window</li>
+                <li>Go to File > Properties</li>
+                <li>Find the "Internet headers" section at the bottom</li>
+                <li>Copy the header text</li>
+            </ol>
+        </div>
+
+        <div class="client-instructions" id="apple-instructions">
+            <div class="instructions-header">
+                <button class="back-button" onclick="showClientSelector()">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h4><i class="fab fa-apple"></i> Apple Mail</h4>
+            </div>
+            <ol>
+                <li>Open the email message</li>
+                <li>Click View > Message > All Headers</li>
+                <li>Select and copy all header text</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header-container">
+        <div class="title-section">
+            <h1>Email Headers Analysis</h1>
+            <p class="section-description">Analyze email headers to verify authenticity, trace routing, and detect potential issues.</p>
+        </div>
+    </div>
+
+    <form action="{{ url_for('api.headers') }}" method="POST" class="test-form" id="headerForm">
+        <div class="input-group">
+            <div class="input-header">
+                <label for="headers-input" style="color: #eeeeee;">Email Headers</label>
+            </div>
+            <textarea name="headers" 
+                      id="headers-input"
+                      class="headers-input" 
+                      placeholder="Paste your email headers here..."
+                      rows="10"
+                      required
+                      style="text-align: left;"></textarea>
+            <button type="submit" class="submit-button">Analyze Headers</button>
+        </div>
+    </form>
+
+    <!-- Loading Animation -->
+    <div class="loading-container hidden" id="loadingContainer">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Analyzing Email Headers</div>
+        </div>
+    </div>
+
+    {% if results %}
+        {% if results.status == 'error' %}
+            <div class="error-group">
+                <div class="error-item">{{ results.message }}</div>
+            </div>
+        {% else %}
+            <div class="test-section">
+                <!-- Spam Score -->
+                <div class="test-group">
+                    <h3>Trust Score</h3>
+                    <div class="score-container">
+                        <div class="score {% if results.spam_score >= 80 %}good{% elif results.spam_score >= 60 %}warning{% else %}bad{% endif %}">
+                            {{ results.spam_score }}/100
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Authentication Results -->
+                <div class="test-group">
+                    <h3>Authentication Results</h3>
+                    <div class="test-results">
+                        {% for auth in results.authentication %}
+                            <div class="test-item {% if auth.status == 'pass' %}good{% else %}bad{% endif %}">
+                                <div class="header-info">
+                                    <span class="header-name">{{ auth.type }}</span>
+                                </div>
+                                <div class="header-status">
+                                    <span class="{% if auth.status == 'pass' %}good-label{% else %}missing-label{% endif %}">
+                                        {{ auth.result }}
+                                    </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Message Information -->
+                <div class="test-group">
+                    <h3>Message Information</h3>
+                    <div class="message-info">
+                        {% for key, value in results.message_info.message_info.items() %}
+                            <div class="info-row">
+                                <span class="info-label">{{ key|title }}</span>
+                                <span class="info-value">{{ value }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Routing Chain -->
+                <div class="test-group">
+                    <h3>Email Route</h3>
+                    <div class="routing-chain">
+                        {% for hop in results.routing %}
+                            <div class="routing-hop">
+                                <div class="hop-details">
+                                    <span class="hop-from">{{ hop.from }}</span>
+                                    <span class="hop-arrow">→</span>
+                                    <span class="hop-to">{{ hop.by }}</span>
+                                </div>
+                                <div class="hop-time">{{ hop.timestamp }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Recommendations -->
+                {% if results.recommendations %}
+                    <div class="recommendations-group">
+                        <h3>Analysis & Recommendations</h3>
+                        {% for rec in results.recommendations %}
+                            <div class="recommendation-item {{ rec.severity }}">
+                                <span class="severity-badge">{{ rec.severity|upper }}</span>
+                                <h4 class="issue">{{ rec.issue }}</h4>
+                                <div class="rec-details">
+                                    <div class="impact">
+                                        <span class="label">Impact:</span>
+                                        <span class="text">{{ rec.impact }}</span>
+                                    </div>
+                                    <div class="fix">
+                                        <span class="label">Fix:</span>
+                                        <span class="text">{{ rec.fix }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('headerForm');
+    const loadingContainer = document.getElementById('loadingContainer');
+    const helpContent = document.getElementById('headerHelp');
+    
+    // Close help dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.help-section')) {
+            hideAllHelp();
+        }
+    });
+
+    if (form) {
+        form.addEventListener('submit', function() {
+            if (loadingContainer) {
+                loadingContainer.classList.remove('hidden');
+            }
+        });
+    }
+});
+
+function toggleHeaderHelp() {
+    const helpContent = document.getElementById('headerHelp');
+    const clientSelector = document.querySelector('.email-client-selector');
+    const allInstructions = document.querySelectorAll('.client-instructions');
+    
+    if (helpContent.style.display === 'none' || !helpContent.style.display) {
+        hideAllHelp();
+        helpContent.style.display = 'block';
+        clientSelector.style.display = 'block';
+    } else {
+        hideAllHelp();
+    }
+}
+
+function showClientInstructions(client) {
+    const clientSelector = document.querySelector('.email-client-selector');
+    const instructions = document.getElementById(`${client}-instructions`);
+    
+    clientSelector.style.display = 'none';
+    instructions.style.display = 'block';
+}
+
+function showClientSelector() {
+    const allInstructions = document.querySelectorAll('.client-instructions');
+    const clientSelector = document.querySelector('.email-client-selector');
+    
+    allInstructions.forEach(inst => inst.style.display = 'none');
+    clientSelector.style.display = 'block';
+}
+
+function hideAllHelp() {
+    const helpContent = document.getElementById('headerHelp');
+    const allInstructions = document.querySelectorAll('.client-instructions');
+    
+    helpContent.style.display = 'none';
+    allInstructions.forEach(inst => inst.style.display = 'none');
+}
+</script>
 {% endblock %} 
